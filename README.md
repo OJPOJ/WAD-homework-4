@@ -1,25 +1,29 @@
-# wad-homework-3
+# WAD2023-Lab13-Backend
 
-## Project setup
+## Pre-requisites
+Node.js \& NPM
+
+## Clone the repository
 ```
-npm install vuex
+git clone https://github.com/M-Gharib/WAD2023-Lab13-Backend.git
+```
+
+## Navigate to the project directory
+```
+cd <project name>
+```
+
+## Install dependencies
+```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Run the project
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npm start
 ```
 
-### Lints and fixes files
+or 
 ```
-npm run lint
+npm server.js
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
