@@ -37,4 +37,16 @@ execute(createTblQuery).then(result => {
     }
 });
 
+const createPostTblQuery = `
+    CREATE TABLE IF NOT EXISTS "posts" (
+        id serial PRIMARY KEY,
+        body VARCHAR(1000) NOT NULL
+    );`;
+
+execute(createPostTblQuery).then(result => {
+    if (result) {
+        console.log('Table "posts" is created');
+    }
+});
+
 module.exports = pool;

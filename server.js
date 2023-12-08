@@ -120,6 +120,24 @@ app.post('/auth/login', async(req, res) => {
     }
 });
 
+// get the posts
+app.post('/posts', async(req, res) => {
+    try {
+        console.log("a get posts request has arrived");
+        //console.log(req.body);
+        const posts = await pool.query( // insert the user and the hashed password into the database
+            "SELECT * FROM posts"
+        );
+        res
+            .status(201)
+            .json({posts:posts})
+            .send;
+    } catch (err) {
+        console.error(err.message);
+        res.status(400).send(err.message);
+    }
+});
+
 //logout a user = deletes the jwt
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
