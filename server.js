@@ -65,7 +65,8 @@ app.post('/auth/signup', async(req, res) => {
         console.log("a signup request has arrived");
         //console.log(req.body);
         const { email, password } = req.body;
-
+        const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (user.rows.length === 1) return res.status(400).json({ error: "Email already registered" });
         const salt = await bcrypt.genSalt(); //  generates the salt, i.e., a random string
         const bcryptPassword = await bcrypt.hash(password, salt) // hash the password and the salt 
         const authUser = await pool.query( // insert the user and the hashed password into the database
@@ -115,6 +116,27 @@ app.post('/auth/login', async(req, res) => {
             .cookie('jwt', token, { maxAge: 6000000, httpOnly: true })
             .json({ user_id: user.rows[0].id })
             .send;
+    } catch (error) {
+        res.status(401).json({ error: error.message });
+    }
+});
+
+app.get('/auth/getData', async(req, res) => {
+    try {
+        console.log("get data");
+        const user = await pool.query("SELECT * FROM users");
+        res
+            .json(user.rows)
+            .send();
+    } catch (error) {
+    }
+});
+
+app.delete('/auth/delete', async(req, res) => {
+    try {
+        console.log("deleteing request");
+        const user = await pool.query("DELETE FROM users *");
+        res.json(user)
     } catch (error) {
         res.status(401).json({ error: error.message });
     }
