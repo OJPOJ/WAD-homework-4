@@ -143,6 +143,7 @@ app.delete('/auth/delete', async(req, res) => {
 });
 
 // get the posts
+/*
 app.post('/posts', async(req, res) => {
     try {
         console.log("a get posts request has arrived");
@@ -159,9 +160,72 @@ app.post('/posts', async(req, res) => {
         res.status(400).send(err.message);
     }
 });
-
+*/
 //logout a user = deletes the jwt
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
+app.post('/auth/posts', async(req, res) => {
+    try {
+        console.log("a post request has arrived");
+        const post = req.body;
+        const newpost = await pool.query(
+            "INSERT INTO posts(body) values ($1) RETURNING*", [post.body]
+        );
+        res.json(newpost);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/auth/posts', async(req, res) => {
+    try {
+        console.log("a get posts request has arrived");
+        const posts = await pool.query(
+            "SELECT * FROM posts"
+        );
+        res.json(posts.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+app.get("/auth/posts/:id", async(req, res) => {
+    try {
+        console.log("get a post with route parameter  request has arrived");
+        const { id } = req.params;
+        const posts = await pool.query(
+            "SELECT * FROM posts WHERE id = $1", [id]
+        );
+        res.json(posts.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+app.put('/auth/posts/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { body } = req.body;
+        console.log("update a post request has arrived");
+        const updatepost = await pool.query(
+            "UPDATE posts SET body = $1 WHERE id = $2 RETURNING*", [body, id]
+        );
+        res.json(updatepost);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.delete('/auth/delete-posts', async (req, res) => {
+    try {
+        console.log("deleting all posts request");
+        const result = await pool.query("DELETE FROM posts");
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+

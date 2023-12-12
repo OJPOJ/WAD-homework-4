@@ -31,21 +31,15 @@ const createTblQuery = `
         password VARCHAR(200) NOT NULL 
     );`;
 
-execute(createTblQuery).then(result => {
-    if (result) {
-        console.log('Table "users" is created');
-    }
-});
-
 const createPostTblQuery = `
     CREATE TABLE IF NOT EXISTS "posts" (
-        id serial PRIMARY KEY,
-        body VARCHAR(1000) NOT NULL
+        "id" SERIAL PRIMARY KEY,
+        "body" VARCHAR(1000) NOT NULL
     );`;
 
-execute(createPostTblQuery).then(result => {
+execute(createTblQuery, createPostTblQuery).then(result => {
     if (result) {
-        console.log('Table "posts" is created');
+        console.log('Table "posts" and table "users" is created');
     }
 });
 
