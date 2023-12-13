@@ -190,7 +190,7 @@ app.get('/auth/posts', async(req, res) => {
         console.error(err.message);
     }
 });
-app.get("/auth/posts/:id", async(req, res) => {
+app.get("/auth/post/:id", async(req, res) => {
     try {
         console.log("get a post with route parameter  request has arrived");
         const { id } = req.params;
@@ -198,11 +198,12 @@ app.get("/auth/posts/:id", async(req, res) => {
             "SELECT * FROM posts WHERE id = $1", [id]
         );
         res.json(posts.rows[0]);
+        console.log(posts.rows[0])
     } catch (err) {
         console.error(err.message);
     }
 });
-app.put('/auth/posts/:id', async(req, res) => {
+app.put('/auth/post/:id', async(req, res) => {
     try {
         const { id } = req.params;
         const { body } = req.body;
@@ -226,7 +227,7 @@ app.delete('/auth/delete-posts', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-app.delete('/auth/posts/:id', async(req, res) => {
+app.delete('/auth/post/:id', async(req, res) => {
     try {
         const { id } = req.params;
         console.log("delete a post request has arrived");
