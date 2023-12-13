@@ -34,12 +34,17 @@ const createTblQuery = `
 const createPostTblQuery = `
     CREATE TABLE IF NOT EXISTS "posts" (
         "id" SERIAL PRIMARY KEY,
-        "body" VARCHAR(1000) NOT NULL
+        "body" VARCHAR(1000) NOT NULL,
+        "date" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );`;
 
-execute(createTblQuery, createPostTblQuery).then(result => {
-    if (result) {
-        console.log('Table "posts" and table "users" is created');
+execute(createTblQuery).then(result1 => {
+    if (result1) {
+        execute(createPostTblQuery).then(result2 => {
+            if (result2) {
+                console.log('Table "posts" and table "users" are created');
+            }
+        });
     }
 });
 

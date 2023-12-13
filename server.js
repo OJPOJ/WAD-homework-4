@@ -144,7 +144,7 @@ app.delete('/auth/delete', async(req, res) => {
 
 // get the posts
 /*
-app.post('/posts', async(req, res) => {
+app.get('/auth/posts', async(req, res) => {
     try {
         console.log("a get posts request has arrived");
         //console.log(req.body);
@@ -171,7 +171,7 @@ app.post('/auth/posts', async(req, res) => {
         console.log("a post request has arrived");
         const post = req.body;
         const newpost = await pool.query(
-            "INSERT INTO posts(body) values ($1) RETURNING*", [post.body]
+            "INSERT INTO posts(body, date) values ($1, $2) RETURNING*", [post.body, post.date]
         );
         res.json(newpost);
     } catch (err) {
@@ -208,7 +208,7 @@ app.put('/auth/posts/:id', async(req, res) => {
         const { body } = req.body;
         console.log("update a post request has arrived");
         const updatepost = await pool.query(
-            "UPDATE posts SET body = $1 WHERE id = $2 RETURNING*", [body, id]
+            "UPDATE posts SET (body, date) = ($2, $3) WHERE id = $1 RETURNING*", [body, id]
         );
         res.json(updatepost);
     } catch (err) {
@@ -226,6 +226,17 @@ app.delete('/auth/delete-posts', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
+app.delete('/auth/posts/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        console.log("delete a post request has arrived");
+        const deletepost = await pool.query(
+            "DELETE FROM posts WHERE id = $1 RETURNING*", [id]
+        );
+        res.json(deletepost);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 
