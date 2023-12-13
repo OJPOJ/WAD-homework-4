@@ -209,7 +209,7 @@ app.put('/auth/post/:id', async(req, res) => {
         const { body } = req.body;
         console.log("update a post request has arrived");
         const updatepost = await pool.query(
-            "UPDATE posts SET (body, date) = ($2, $3) WHERE id = $1 RETURNING*", [body, id]
+            "UPDATE posts SET body = $1 WHERE id = $2 RETURNING*", [body, id]
         );
         res.json(updatepost);
     } catch (err) {
