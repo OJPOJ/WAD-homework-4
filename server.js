@@ -124,9 +124,9 @@ app.post('/auth/login', async(req, res) => {
 app.get('/auth/getData', async(req, res) => {
     try {
         console.log("get data");
-        const user = await pool.query("SELECT * FROM users");
+        const post = await pool.query("SELECT * FROM posts");
         res
-            .json(user.rows)
+            .json(post.rows)
             .send();
     } catch (error) {
     }
